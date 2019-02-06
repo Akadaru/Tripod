@@ -170,6 +170,8 @@ namespace CtrEvents
 
         static void ShowEvents(int nStart, int nCount)
         {
+            var msg = "";
+
             ZG_CTR_EVENT[] aEvents = new ZG_CTR_EVENT[6];
             ZG_CTR_EVENT rEv;
             int i = 0;
@@ -203,12 +205,22 @@ namespace CtrEvents
                                 ZG_EC_SUB_EV nSubEvent = new ZG_EC_SUB_EV();
                                 UInt32 nPowerFlags = 0;
                                 ZGIntf.ZG_Ctr_DecodeEcEvent(m_hCtr, rEv.aData, ref rTime, ref nSubEvent, ref nPowerFlags);
+                                /*
                                 Console.WriteLine("{0}. {1:D2}.{2:D2} {3:D2}:{4:D2}:{5:D2} {6} Sub_event: {7} Power flags: {8:X2}h",
                                     nIdx + j,
                                     rTime.nDay, rTime.nMonth,
                                     rTime.nHour, rTime.nMinute, rTime.nSecond,
                                     EvTypeStrs[(int)rEv.nType],
                                     EcSubEvStrs[(int)nSubEvent], nPowerFlags);
+                                 */
+                                msg = string.Format("{0}. {1:D2}.{2:D2} {3:D2}:{4:D2}:{5:D2} {6} Sub_event: {7} Power flags: {8:X2}h",
+                                    nIdx + j,
+                                    rTime.nDay, rTime.nMonth,
+                                    rTime.nHour, rTime.nMinute, rTime.nSecond,
+                                    EvTypeStrs[(int)rEv.nType],
+                                    EcSubEvStrs[(int)nSubEvent], nPowerFlags);
+                                Console.WriteLine(msg);
+                                OnReportHandler(msg); // и т.д. по желанию
                             }
                             break;
                         case ZG_CTR_EV_TYPE.ZG_EV_FIRE_STATE:
@@ -245,6 +257,7 @@ namespace CtrEvents
                                 ZG_CTR_MODE nMode = new ZG_CTR_MODE();
                                 ZG_MODE_SUB_EV nSubEvent = new ZG_MODE_SUB_EV();
                                 ZGIntf.ZG_Ctr_DecodeModeEvent(m_hCtr, rEv.aData, ref rTime, ref nMode, ref nSubEvent);
+                                /*
                                 Console.WriteLine("{0}. {1:D2}.{2:D2} {3:D2}:{4:D2}:{5:D2} {6} Mode: {7} Sub_event: {8}",
                                     nIdx + j,
                                     rTime.nDay, rTime.nMonth,
@@ -252,15 +265,32 @@ namespace CtrEvents
                                     EvTypeStrs[(int)rEv.nType],
                                     ModeStrs[(int)nMode],
                                     ModeSubEvStrs[(int)nSubEvent]);
+                                 */
+                                msg = string.Format("{0}. {1:D2}.{2:D2} {3:D2}:{4:D2}:{5:D2} {6} Mode: {7} Sub_event: {8}",
+                                    nIdx + j,
+                                    rTime.nDay, rTime.nMonth,
+                                    rTime.nHour, rTime.nMinute, rTime.nSecond,
+                                    EvTypeStrs[(int)rEv.nType],
+                                    ModeStrs[(int)nMode],
+                                    ModeSubEvStrs[(int)nSubEvent]);
+                                Console.WriteLine(msg);
+                                OnReportHandler(msg); // и т.д. по желанию
                             }
                             break;
                         case ZG_CTR_EV_TYPE.ZG_EV_UNKNOWN_KEY:
                             {
                                 Byte[] rKeyNum = new Byte[16];
                                 ZGIntf.ZG_Ctr_DecodeUnkKeyEvent(m_hCtr, rEv.aData, rKeyNum);
+                                /*
                                 Console.WriteLine("{0}.  Key \"{1}\"",
                                     nIdx + j,
                                     ZGIntf.CardNumToStr(rKeyNum, m_fProximity));
+                                 */
+                                msg = string.Format("{0}.  Key \"{1}\"",
+                                    nIdx + j,
+                                    ZGIntf.CardNumToStr(rKeyNum, m_fProximity));
+                                Console.WriteLine(msg);
+                                OnReportHandler(msg); // и т.д. по желанию
                             }
                             break;
                         case ZG_CTR_EV_TYPE.ZG_EV_HOTEL40:
@@ -315,7 +345,10 @@ namespace CtrEvents
                     case ZGIntf.ZG_N_CTR_NEW_EVENT:
                         {
                             ZG_N_NEW_EVENT_INFO pInfo = (ZG_N_NEW_EVENT_INFO)Marshal.PtrToStructure(nMsgParam, typeof(ZG_N_NEW_EVENT_INFO));
-                            Console.WriteLine("==> Новые события: {0}.", pInfo.nNewCount);
+                            //Console.WriteLine("==> Новые события: {0}.", pInfo.nNewCount);
+                            var msg = string.Format("==> Новые события: {0}.", pInfo.nNewCount);
+                            Console.WriteLine(msg);
+                            OnReportHandler(msg); // и т.д. по желанию
                             ShowEvents(pInfo.nReadIdx, pInfo.nNewCount);
                             m_nAppReadEventIdx = pInfo.nWriteIdx;
                         }
@@ -471,32 +504,48 @@ namespace CtrEvents
                 hr = ZGIntf.ZG_Ctr_SetNotification(m_hCtr, null);
                 if (hr < 0)
                 {
-                    Console.WriteLine("Ошибка ZG_Ctr_SetNotification ({0}).", hr);
+                    //Console.WriteLine("Ошибка ZG_Ctr_SetNotification ({0}).", hr);
+                    msg = string.Format("Ошибка ZG_Ctr_SetNotification ({0}).", hr);
+                    Console.WriteLine(msg);
+                    OnReportHandler(msg); // и т.д. по желанию
                     Console.ReadLine();
                     return;
                 }
             }
             m_fCtrNotifyEnabled = fEnable;
-            Console.WriteLine("Успешно.");
+            //Console.WriteLine("Успешно.");
+            msg = string.Format("Успешно.");
+            Console.WriteLine(msg);
+            OnReportHandler(msg); // и т.д. по желанию
         }
 
         static void DoRestoreFactorySettings()
         {
+            var msg = "";
+
             int hr;
             Console.WriteLine("Запись (0, 0)...");
             hr = ZGIntf.ZG_Ctr_WriteEventIdxs(m_hCtr, 0x3, 0, 0);
             if (hr < 0)
             {
-                Console.WriteLine("Ошибка ZG_Ctr_WriteEventIdxs ({0}).", hr);
+                //Console.WriteLine("Ошибка ZG_Ctr_WriteEventIdxs ({0}).", hr);
+                msg = string.Format("Ошибка ZG_Ctr_WriteEventIdxs ({0}).", hr);
+                Console.WriteLine(msg);
+                OnReportHandler(msg); // и т.д. по желанию
                 Console.ReadLine();
                 return;
             }
             m_nAppReadEventIdx = 0;
             Console.WriteLine("Успешно.");
+            msg = string.Format("Успешно.");
+            Console.WriteLine(msg);
+            OnReportHandler(msg); // и т.д. по желанию
         }
 
         internal static void Main(string[] args)
         {
+            var msg = "";
+
             // Проверяем версию SDK
             UInt32 nVersion = ZGIntf.ZG_GetVersion();
             if ((((nVersion & 0xFF)) != ZGIntf.ZG_SDK_VER_MAJOR) || (((nVersion >> 8) & 0xFF) != ZGIntf.ZG_SDK_VER_MINOR))
@@ -512,7 +561,10 @@ namespace CtrEvents
             hr = ZGIntf.ZG_Initialize(ZPIntf.ZP_IF_NO_MSG_LOOP);
             if (hr < 0)
             {
-                Console.WriteLine("Ошибка ZG_Initialize ({0}).", hr);
+                //Console.WriteLine("Ошибка ZG_Initialize ({0}).", hr);
+                msg = string.Format("Ошибка ZG_Initialize ({0}).", hr);
+                Console.WriteLine(msg);
+                OnReportHandler(msg); // и т.д. по желанию
                 Console.ReadLine();
                 return;
             }
@@ -526,7 +578,10 @@ namespace CtrEvents
                 hr = ZGIntf.ZG_Cvt_Open(ref hCvt, ref rOp, rInfo);
                 if (hr < 0)
                 {
-                    Console.WriteLine("Ошибка ZG_Cvt_Open ({0}).", hr);
+                    //Console.WriteLine("Ошибка ZG_Cvt_Open ({0}).", hr);
+                    msg = string.Format("Ошибка ZG_Cvt_Open ({0}).", hr);
+                    Console.WriteLine(msg);
+                    OnReportHandler(msg); // и т.д. по желанию
                     Console.ReadLine();
                     return;
                 }
@@ -534,13 +589,17 @@ namespace CtrEvents
                 hr = ZGIntf.ZG_Ctr_Open(ref m_hCtr, hCvt, CtrAddr, 0, ref rCtrInfo);
                 if (hr < 0)
                 {
-                    Console.WriteLine("Ошибка ZG_Ctr_Open ({0}).", hr);
+                    //Console.WriteLine("Ошибка ZG_Ctr_Open ({0}).", hr);
+                    msg = string.Format("Ошибка ZG_Ctr_Open ({0}).", hr);
+                    Console.WriteLine(msg);
+                    OnReportHandler(msg); // и т.д. по желанию
                     Console.ReadLine();
                     return;
                 }
                 m_nCtrMaxEvents = rCtrInfo.nMaxEvents;
                 m_fProximity = ((rCtrInfo.nFlags & ZGIntf.ZG_CTR_F_PROXIMITY) != 0);
                 m_nCtrFlags = rCtrInfo.nFlags;
+                /*
                 Console.WriteLine("{0} адрес: {1}, с/н: {2}, v{3}.{4}, Количество событий: {5}, Тип ключей: {6}.", 
                     CtrTypeStrs[(int)rCtrInfo.nType],
                     rCtrInfo.nAddr,
@@ -548,6 +607,16 @@ namespace CtrEvents
                     rCtrInfo.nVersion & 0xff, (rCtrInfo.nVersion >> 8) & 0xff,
                     rCtrInfo.nMaxEvents,
                     KeyModeStrs[m_fProximity ? 1 : 0]);
+                 */
+                msg = string.Format("{0} адрес: {1}, с/н: {2}, v{3}.{4}, Количество событий: {5}, Тип ключей: {6}.",
+                    CtrTypeStrs[(int)rCtrInfo.nType],
+                    rCtrInfo.nAddr,
+                    rCtrInfo.nSn,
+                    rCtrInfo.nVersion & 0xff, (rCtrInfo.nVersion >> 8) & 0xff,
+                    rCtrInfo.nMaxEvents,
+                    KeyModeStrs[m_fProximity ? 1 : 0]);
+                Console.WriteLine(msg);
+                OnReportHandler(msg);
                 m_fCtrNotifyEnabled = false;
                 int nWrIdx = 0;
                 int nRdIdx = 0;
@@ -559,7 +628,10 @@ namespace CtrEvents
                     return;
                 }
                 m_nAppReadEventIdx = nWrIdx;
-                Console.WriteLine("-----");
+                //Console.WriteLine("-----");
+                msg = string.Format("-----");
+                Console.WriteLine(msg);
+                OnReportHandler(msg);
                 string s;
                 while (true)
                 {
@@ -592,8 +664,8 @@ namespace CtrEvents
                                 break;
                             case 3:
                                 ToggleEventNotifyer();
-                                if (returnAfterExecute)
-                                    return;
+                                //if (returnAfterExecute)
+                                //    return;
                                 break;
                             case 9:
                                 DoRestoreFactorySettings();

@@ -7,3 +7,4 @@ D:\!Programming\Git_rep\Tripod\Vizor\CtrEvents\bin\Debug\CtrEvents.dll.config
 D:\!Programming\Git_rep\Tripod\Vizor\CtrEvents\bin\Debug\CtrEvents.dll
 D:\!Programming\Git_rep\Tripod\Vizor\CtrEvents\bin\Debug\CtrEvents.pdb
 D:\!Programming\Git_rep\Tripod\Vizor\CtrEvents\obj\x86\Debug\CtrEvents.dll
+d:\!Programming\Git_rep\Tripod\Vizor\CtrEvents\obj\x86\Debug\CtrEvents.csprojResolveAssemblyReference.cache
