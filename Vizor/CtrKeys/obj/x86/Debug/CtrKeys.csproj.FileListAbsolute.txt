@@ -1,0 +1,5 @@
+D:\!Programming\Git_rep\Tripod\Vizor\CtrKeys\bin\Debug\CtrKeys.dll
+D:\!Programming\Git_rep\Tripod\Vizor\CtrKeys\bin\Debug\CtrKeys.pdb
+D:\!Programming\Git_rep\Tripod\Vizor\CtrKeys\obj\x86\Debug\CtrKeys.csprojResolveAssemblyReference.cache
+D:\!Programming\Git_rep\Tripod\Vizor\CtrKeys\obj\x86\Debug\CtrKeys.dll
+D:\!Programming\Git_rep\Tripod\Vizor\CtrKeys\obj\x86\Debug\CtrKeys.pdb

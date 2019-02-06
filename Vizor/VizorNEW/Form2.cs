@@ -21,5 +21,21 @@ namespace VizorNEW
             var result = startObj.Pysch(1);
             textBox1.Text = result.ToString();
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            var startObj = new CtrKeys.Start();
+            var result = startObj.Pysch(6);
+            textBox1.Text = result.ToString();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            var startObj = new CtrEvents.Start();
+            var result = startObj.Pysch(3);
+            textBox1.Text = result.ToString();
+        }
+
+
     }
 }

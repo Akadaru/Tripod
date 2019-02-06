@@ -58,10 +58,14 @@ namespace CtrKeys
             ZG_CTR_KEY[] aKeys = new ZG_CTR_KEY[6];
             ZG_CTR_KEY pKey;
 
+            var msg = "";
+
             for (i = 0; i < m_nCtrMaxBanks; i++)
             {
-                var msg = "";
-                Console.WriteLine("------------");
+                //var msg = "";
+                msg = string.Format("------------");
+                Console.WriteLine(msg);
+                //OnReportHandler(msg); // и т.д. по желанию
                 msg = string.Format("Банк № {0}:", i);
                 Console.WriteLine(msg);
                 OnReportHandler(msg); // и т.д. по желанию
@@ -69,13 +73,20 @@ namespace CtrKeys
                 hr = ZGIntf.ZG_Ctr_GetKeyTopIndex(m_hCtr, ref nTop, i);
                 if (hr < 0)
                 {
-                    Console.WriteLine("Ошибка ZG_Ctr_GetKeyTopIndex (банк № {0}) ({1}).", i, hr);
+                    //Console.WriteLine("Ошибка ZG_Ctr_GetKeyTopIndex (банк № {0}) ({1}).", i, hr);
+                    msg = string.Format("Ошибка ZG_Ctr_GetKeyTopIndex (банк № {0}) ({1}).", i, hr);
+                    Console.WriteLine(msg);
+                    OnReportHandler(msg); // и т.д. по желанию
+                    continue;
                     Console.ReadLine();
                     return;
                 }
                 if (nTop == 0)
                 {
-                    Console.WriteLine("список пуст.");
+                    //Console.WriteLine("список пуст.");
+                    msg = string.Format("список пуст.");
+                    Console.WriteLine(msg);
+                    OnReportHandler(msg); // и т.д. по желанию
                     continue;
                 }
                 for (j = 0; j < nTop; j++)
@@ -88,7 +99,10 @@ namespace CtrKeys
                         hr = ZGIntf.ZG_Ctr_ReadKeys(m_hCtr, j, aKeys, nCount, null, IntPtr.Zero, i);
                         if (hr < 0)
                         {
-                            Console.WriteLine("Ошибка ZG_Ctr_ReadKeys (банк № {0}) ({1}).", i, hr);
+                            //Console.WriteLine("Ошибка ZG_Ctr_ReadKeys (банк № {0}) ({1}).", i, hr);
+                            msg = string.Format("Ошибка ZG_Ctr_ReadKeys (банк № {0}) ({1}).", i, hr);
+                            Console.WriteLine(msg);
+                            OnReportHandler(msg); // и т.д. по желанию
                             Console.ReadLine();
                             return;
                         }
@@ -116,7 +130,10 @@ namespace CtrKeys
                     }
                 }
             }
-            Console.WriteLine("Успешно.");
+            //Console.WriteLine("Успешно.");
+            msg = string.Format("Успешно.");
+            Console.WriteLine(msg);
+            OnReportHandler(msg); // и т.д. по желанию
         }
 
         static bool ParseKeyNum(ref Byte[] rKeyNum, string sText)
@@ -237,9 +254,15 @@ namespace CtrKeys
             int nBankN, nKeyIdx, nKeyType, nKeyAccess;
             string s;
 
-            Console.WriteLine("Введите № банка, индекс ключа (-1 верхняя граница), " +
-                "номер ключа (-1 последний поднесенный), тип (1-обычный,2-блокирующий,3-мастер), " + 
+            //Console.WriteLine("Введите № банка, индекс ключа (-1 верхняя граница), " +
+            //    "номер ключа (-1 последний поднесенный), тип (1-обычный,2-блокирующий,3-мастер), " + 
+            //    "доступ (hex):");
+            var msg = "";
+            msg = string.Format("Введите № банка, индекс ключа (-1 верхняя граница), " +
+                "номер ключа (-1 последний поднесенный), тип (1-обычный,2-блокирующий,3-мастер), " +
                 "доступ (hex):");
+            Console.WriteLine(msg);
+            OnReportHandler(msg); // и т.д. по желанию
             s = Console.ReadLine();
             string[] aValues = s.Split(',');
             if (aValues.Length < 5)
@@ -447,11 +470,13 @@ namespace CtrKeys
             IntPtr hCvt = new IntPtr(0);
             int hr;
 
+            var msg = "";
+
             hr = ZGIntf.ZG_Initialize(ZPIntf.ZP_IF_NO_MSG_LOOP);
             if (hr < 0)
             {
                 // эта конструкция заменяет нам прудыдущую
-                var msg = string.Format("Ошибка ZG_Initialize ({0}).", hr);
+                msg = string.Format("Ошибка ZG_Initialize ({0}).", hr);
                 Console.WriteLine(msg);
                 OnReportHandler(msg);
                 Console.ReadLine();
@@ -467,7 +492,10 @@ namespace CtrKeys
                 hr = ZGIntf.ZG_Cvt_Open(ref hCvt, ref rOp, rInfo);
                 if (hr < 0)
                 {
-                    Console.WriteLine("Ошибка ZG_Cvt_Open ({0}).", hr);
+                    //Console.WriteLine("Ошибка ZG_Cvt_Open ({0}).", hr);
+                    msg = string.Format("Ошибка ZG_Cvt_Open ({0}).", hr);
+                    Console.WriteLine(msg);
+                    OnReportHandler(msg);
                     Console.ReadLine();
                     return;
                 }
@@ -475,7 +503,10 @@ namespace CtrKeys
                 hr = ZGIntf.ZG_Ctr_Open(ref m_hCtr, hCvt, CtrAddr, 0, ref rCtrInfo);
                 if (hr < 0)
                 {
-                    Console.WriteLine("Ошибка ZG_Ctr_Open ({0}).", hr);
+                    //Console.WriteLine("Ошибка ZG_Ctr_Open ({0}).", hr);
+                    msg = string.Format("Ошибка ZG_Ctr_Open ({0}).", hr);
+                    Console.WriteLine(msg);
+                    OnReportHandler(msg);
                     Console.ReadLine();
                     return;
                 }
@@ -483,7 +514,7 @@ namespace CtrKeys
                 m_fProximity = ((rCtrInfo.nFlags & ZGIntf.ZG_CTR_F_PROXIMITY) != 0);
 
                 // в любом месте, где мы хотим видеть текст не только в консоли, но и в результате вывода, вызываем OnReportHandler
-                var msg = string.Format("{0} адрес: {1}, с/н: {2}, v{3}.{4}, Количество банков: {5}, Тип ключей: {6}.",
+                 msg = string.Format("{0} адрес: {1}, с/н: {2}, v{3}.{4}, Количество банков: {5}, Тип ключей: {6}.",
                     CtrTypeStrs[(int) rCtrInfo.nType],
                     rCtrInfo.nAddr,
                     rCtrInfo.nSn,
@@ -516,7 +547,6 @@ namespace CtrKeys
                     Console.WriteLine("1 - показать ключи");
                     Console.WriteLine("2 - поиск ключа по номеру...");
                     Console.WriteLine("3 - показать верхнюю границу ключей");
-
                     Console.WriteLine("6 - установка ключа...");
                     Console.WriteLine("7 - стирание ключа...");
                     Console.WriteLine("8 - стирание всех ключей...");
@@ -547,6 +577,8 @@ namespace CtrKeys
                                 break;
                             case 6:
                                 DoSetKey();
+                                if (returnAfterExecute)
+                                    return;
                                 break;
                             case 7:
                                 DoClearKey();

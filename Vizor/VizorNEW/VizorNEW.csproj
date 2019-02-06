@@ -104,7 +104,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="c:\SDK Guard\CSharp\Examples\CtrKeys\CtrKeys.csproj">
+    <ProjectReference Include="..\CtrEvents\CtrEvents.csproj">
+      <Project>{c04c8b21-5b25-4c91-bb06-3e656310ca81}</Project>
+      <Name>CtrEvents</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CtrKeys\CtrKeys.csproj">
       <Project>{b572c0d1-5e74-4aaf-a49e-e6df39c681e3}</Project>
       <Name>CtrKeys</Name>
     </ProjectReference>

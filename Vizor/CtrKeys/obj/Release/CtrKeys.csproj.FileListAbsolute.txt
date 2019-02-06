@@ -1,0 +1,2 @@
+d:\!Programming\Git_rep\Tripod\Vizor\CtrKeys\bin\Release\CtrKeys.dll
+d:\!Programming\Git_rep\Tripod\Vizor\CtrKeys\obj\Release\CtrKeys.dll
