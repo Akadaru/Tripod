@@ -16,7 +16,7 @@ namespace CtrKeys
 
         public static void OnReportHandler(string strMessage)
         {
-            if(ReportHandler != null)
+            if (ReportHandler != null)
                 ReportHandler(strMessage, new EventArgs());
         }
 
@@ -119,14 +119,14 @@ namespace CtrKeys
                             KeyTypeStrs[(int)pKey.nType],
                             pKey.nAccess);
                         */
-                         msg = string.Format("{0} {1}, {2}, доступ: {3:X2}h.",
-                            j,
-                            ZGIntf.CardNumToStr(pKey.rNum, m_fProximity),
-                            KeyTypeStrs[(int)pKey.nType],
-                            pKey.nAccess);
+                        msg = string.Format("{0} {1}, {2}, доступ: {3:X2}h.",
+                           j,
+                           ZGIntf.CardNumToStr(pKey.rNum, m_fProximity),
+                           KeyTypeStrs[(int)pKey.nType],
+                           pKey.nAccess);
                         Console.WriteLine(msg);
-                        OnReportHandler(msg); 
-                         
+                        OnReportHandler(msg);
+
                     }
                 }
             }
@@ -242,7 +242,7 @@ namespace CtrKeys
                 {
                     Console.WriteLine("Ошибка ZG_Ctr_GetKeyTopIndex ({0}).", hr);
                     Console.ReadLine();
-                    break;;
+                    break; ;
                 }
                 Console.WriteLine("Банк {0}: {1}", i, nKeyIdx);
             }
@@ -458,72 +458,38 @@ namespace CtrKeys
 
         internal static void Main(string[] args)
         {
-            // Проверяем версию SDK
-            UInt32 nVersion = ZGIntf.ZG_GetVersion();
-            if ((((nVersion & 0xFF)) != ZGIntf.ZG_SDK_VER_MAJOR) || (((nVersion >> 8) & 0xFF) != ZGIntf.ZG_SDK_VER_MINOR))
-            {
-                Console.WriteLine("Неправильная версия SDK Guard.");
-                Console.ReadLine();
-                return;
-            }
-
-            IntPtr hCvt = new IntPtr(0);
+            ZG_CTR_INFO rCtrInfo = new ZG_CTR_INFO();
             int hr;
+            IntPtr hCvt;
+            string msg;
+            //if (TestDeviceAccess(out hCvt, ref rCtrInfo)) return;
+            //if (TestDevice.TestDeviceAccess(out hCvt, ref rCtrInfo)) return; // Тестирование Доступа К Устройству
 
-            var msg = "";
 
-            hr = ZGIntf.ZG_Initialize(ZPIntf.ZP_IF_NO_MSG_LOOP);
-            if (hr < 0)
-            {
-                // эта конструкция заменяет нам прудыдущую
-                msg = string.Format("Ошибка ZG_Initialize ({0}).", hr);
-                Console.WriteLine(msg);
-                OnReportHandler(msg);
-                Console.ReadLine();
-                return;
-            }
             try
             {
-                ZG_CVT_INFO rInfo = new ZG_CVT_INFO();
-                ZG_CVT_OPEN_PARAMS rOp = new ZG_CVT_OPEN_PARAMS();
-                rOp.nPortType = CvtPortType;
-                rOp.pszName = CvtPortName;
-                rOp.nSpeed = ZG_CVT_SPEED.ZG_SPEED_57600;
-                hr = ZGIntf.ZG_Cvt_Open(ref hCvt, ref rOp, rInfo);
-                if (hr < 0)
-                {
-                    //Console.WriteLine("Ошибка ZG_Cvt_Open ({0}).", hr);
-                    msg = string.Format("Ошибка ZG_Cvt_Open ({0}).", hr);
-                    Console.WriteLine(msg);
-                    OnReportHandler(msg);
-                    Console.ReadLine();
-                    return;
-                }
-                ZG_CTR_INFO rCtrInfo = new ZG_CTR_INFO();
-                hr = ZGIntf.ZG_Ctr_Open(ref m_hCtr, hCvt, CtrAddr, 0, ref rCtrInfo);
-                if (hr < 0)
-                {
-                    //Console.WriteLine("Ошибка ZG_Ctr_Open ({0}).", hr);
-                    msg = string.Format("Ошибка ZG_Ctr_Open ({0}).", hr);
-                    Console.WriteLine(msg);
-                    OnReportHandler(msg);
-                    Console.ReadLine();
-                    return;
-                }
                 m_nCtrMaxBanks = ((rCtrInfo.nFlags & ZGIntf.ZG_CTR_F_2BANKS) != 0) ? 2 : 1;
                 m_fProximity = ((rCtrInfo.nFlags & ZGIntf.ZG_CTR_F_PROXIMITY) != 0);
-
                 // в любом месте, где мы хотим видеть текст не только в консоли, но и в результате вывода, вызываем OnReportHandler
-                 msg = string.Format("{0} адрес: {1}, с/н: {2}, v{3}.{4}, Количество банков: {5}, Тип ключей: {6}.",
-                    CtrTypeStrs[(int) rCtrInfo.nType],
-                    rCtrInfo.nAddr,
-                    rCtrInfo.nSn,
-                    rCtrInfo.nVersion & 0xff, (rCtrInfo.nVersion >> 8) & 0xff,
-                    m_nCtrMaxBanks,
-                    KeyModeStrs[m_fProximity ? 1 : 0]);
+                msg = string.Format("{0} адрес: {1}, с/н: {2}, v{3}.{4}, Количество банков: {5}, Тип ключей: {6}.",
+                   CtrTypeStrs[(int)rCtrInfo.nType],
+                   rCtrInfo.nAddr,
+                   rCtrInfo.nSn,
+                   rCtrInfo.nVersion & 0xff, (rCtrInfo.nVersion >> 8) & 0xff,
+                   m_nCtrMaxBanks,
+                   KeyModeStrs[m_fProximity ? 1 : 0]);
                 Console.WriteLine(msg);
                 OnReportHandler(msg);
+            }
+            catch (Exception ex)
+            {
+                OnReportHandler(ex.Message);
+                throw; // бросаемся дальше
+            }
+            
 
+            try
+            {
                 m_oEvent = new ManualResetEvent(false);
                 ZG_CTR_NOTIFY_SETTINGS rNS = new ZG_CTR_NOTIFY_SETTINGS(
                     ZGIntf.ZG_NF_CTR_KEY_TOP, m_oEvent.SafeWaitHandle, IntPtr.Zero, 0,
@@ -556,7 +522,7 @@ namespace CtrKeys
                     if (args != null && args.Length > 0)
                     {
                         s = args[0];
-                            // для примера чисто тебе напишу вариант с одним параметром, ты уже сам сможешь придумать обработку нескольких или вызов методов отдельно от этого шлака
+                        // для примера чисто тебе напишу вариант с одним параметром, ты уже сам сможешь придумать обработку нескольких или вызов методов отдельно от этого шлака
                         returnAfterExecute = true;
                     }
                     if (s != "")
@@ -611,5 +577,7 @@ namespace CtrKeys
                 ZGIntf.ZG_Finalyze();
             }
         }
+
+
     }
 }

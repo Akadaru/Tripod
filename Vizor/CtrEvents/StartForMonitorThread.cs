@@ -7,16 +7,16 @@ namespace CtrEvents
     /// <summary>
     /// не важно как мы назвали класс, ну, типа отсель стартуем
     /// </summary>
-    public class Start
+    public class StartForMonitorThread
     {
         StringBuilder messages = new StringBuilder();
 
         /// <summary>
-        ///  метод Пыщ!
+        ///  метод 
         /// </summary>
         /// <param name="selectMethod"></param>
         /// <returns></returns>
-        public StringBuilder PyschEvent(int selectMethod)
+        public StringBuilder HandlerEvent(int selectMethod)
         {
             // тут у нас одновременно и подписка на событие и добавление в накопитель сообщений, на которые мы подписались
             //Program.ReportHandler += (sender, args) => messagesList.Add(sender.ToString());

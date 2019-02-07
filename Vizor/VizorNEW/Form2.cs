@@ -31,14 +31,33 @@ namespace VizorNEW
 
         private void button3_Click(object sender, EventArgs e)
         {
-            var startObj = new CtrEvents.Start();
-            var result = startObj.Pysch(3);
+            var startObjEvent = new CtrEvents.StartForMonitorThread();
+            var result = startObjEvent.HandlerEvent(3);
             textBox1.Text = result.ToString();
         }
 
         private void bExit_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void bShowNewEvents_Click(object sender, EventArgs e)
+        {
+            var startObjEvent = new CtrEvents.Start();
+            var result = startObjEvent.PyschEvent(1);
+            textBox1.Text = result.ToString();
+        }
+
+        private void bShowAllEvents_Click(object sender, EventArgs e)
+        {
+            var startObjEvent = new CtrEvents.Start();
+            var result = startObjEvent.PyschEvent(2);
+            textBox1.Text = result.ToString();
+        }
+
+        private void Form2_Load(object sender, EventArgs e)
+        {
+            
         }
 
 
