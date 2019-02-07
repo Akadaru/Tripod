@@ -65,7 +65,7 @@ namespace CtrKeys
                 //var msg = "";
                 msg = string.Format("------------");
                 Console.WriteLine(msg);
-                //OnReportHandler(msg); // и т.д. по желанию
+                OnReportHandler(msg); // и т.д. по желанию
                 msg = string.Format("Банк № {0}:", i);
                 Console.WriteLine(msg);
                 OnReportHandler(msg); // и т.д. по желанию

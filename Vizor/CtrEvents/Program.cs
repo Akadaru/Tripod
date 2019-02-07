@@ -642,6 +642,12 @@ namespace CtrEvents
                         m_fCtrNotifyEnabled ? "Выключить" : "Включить");
                     Console.WriteLine("9 - Восстановить заводские настройки (сброс индексов)");
                     Console.WriteLine("0 - выход");
+
+                    // Активация контроля за новыми событиями через отдельный поток
+                    ToggleEventNotifyer();
+                    break;
+
+                    /*
                     s = Console.ReadLine();
                     bool returnAfterExecute = false;
                     if (args != null && args.Length > 0)
@@ -663,9 +669,10 @@ namespace CtrEvents
                                 DoShowAllEvents();
                                 break;
                             case 3:
+                                // Активация контроля за новыми событиями через отдельный поток
                                 ToggleEventNotifyer();
-                                //if (returnAfterExecute)
-                                //    return;
+                                if (returnAfterExecute)
+                                    return;
                                 break;
                             case 9:
                                 DoRestoreFactorySettings();
@@ -678,6 +685,7 @@ namespace CtrEvents
                         }
                     }
                     Console.WriteLine("-----");
+                     */
                 }
             }
             finally

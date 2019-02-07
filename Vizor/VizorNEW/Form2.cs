@@ -36,6 +36,11 @@ namespace VizorNEW
             textBox1.Text = result.ToString();
         }
 
+        private void bExit_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
 
     }
 }

@@ -1,10 +1,6 @@
-C:\SDK Guard\CSharp\Examples\CtrEvents\bin\Debug\CtrEvents.exe
-C:\SDK Guard\CSharp\Examples\CtrEvents\bin\Debug\CtrEvents.pdb
-C:\SDK Guard\CSharp\Examples\CtrEvents\obj\x86\Debug\CtrEvents.exe
-C:\SDK Guard\CSharp\Examples\CtrEvents\obj\x86\Debug\CtrEvents.pdb
-D:\!Programming\Git_rep\Tripod\Vizor\CtrEvents\obj\x86\Debug\CtrEvents.pdb
-D:\!Programming\Git_rep\Tripod\Vizor\CtrEvents\bin\Debug\CtrEvents.dll.config
-D:\!Programming\Git_rep\Tripod\Vizor\CtrEvents\bin\Debug\CtrEvents.dll
-D:\!Programming\Git_rep\Tripod\Vizor\CtrEvents\bin\Debug\CtrEvents.pdb
-D:\!Programming\Git_rep\Tripod\Vizor\CtrEvents\obj\x86\Debug\CtrEvents.dll
 d:\!Programming\Git_rep\Tripod\Vizor\CtrEvents\obj\x86\Debug\CtrEvents.csprojResolveAssemblyReference.cache
+d:\!Programming\Git_rep\Tripod\Vizor\CtrEvents\bin\Debug\CtrEvents.dll.config
+d:\!Programming\Git_rep\Tripod\Vizor\CtrEvents\bin\Debug\CtrEvents.dll
+d:\!Programming\Git_rep\Tripod\Vizor\CtrEvents\bin\Debug\CtrEvents.pdb
+d:\!Programming\Git_rep\Tripod\Vizor\CtrEvents\obj\x86\Debug\CtrEvents.dll
+d:\!Programming\Git_rep\Tripod\Vizor\CtrEvents\obj\x86\Debug\CtrEvents.pdb
